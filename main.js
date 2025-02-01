@@ -25,6 +25,9 @@ function createScene(color) {
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
+    // Сохраняем ссылку на куб в сцене
+    scene.cube = cube;
+
     return scene;
 }
 
@@ -121,6 +124,14 @@ window.addEventListener('touchmove', handleTouchMove, false);
 // Отрисовка сцены
 function animate() {
     requestAnimationFrame(animate);
+
+    // Вращаем куб на текущей сцене
+    const currentScene = scenes[currentIndex];
+    if (currentScene && currentScene.cube) {
+        currentScene.cube.rotation.x += 0.01; // Вращение по оси X
+        currentScene.cube.rotation.y += 0.01; // Вращение по оси Y
+    }
+
     TWEEN.update(); // Убедитесь, что TWEEN обновляется перед рендерингом
     renderer.render(scenes[currentIndex], camera);
 }
