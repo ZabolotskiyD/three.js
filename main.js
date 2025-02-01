@@ -2,7 +2,7 @@
 
 // Импортируем необходимые библиотеки
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.module.js';
-import { TWEEN } from 'https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.6.4/dist/tween.esm.js';
+import * as TWEEN from 'https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.6.4/dist/tween.esm.js';
 
 // Глобальные переменные
 let scenes = [];
