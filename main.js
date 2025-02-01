@@ -49,37 +49,31 @@ function transitionTo(index) {
     const currentScene = scenes[currentIndex];
     const nextScene = scenes[index];
 
-    currentScene.children.forEach((object) => {
-        object.material.opacity = 1;
-        object.material.transparent = true;
-    });
+    // Анимация камеры
+    new TWEEN.Tween(camera.position)
+        .to({ y: -index * 5 }, 1000) // Опускаем камеру вниз (5 единиц на каждую сцену)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .start();
 
-    nextScene.children.forEach((object) => {
-        object.material.opacity = 0;
-        object.material.transparent = true;
-    });
+    // Анимация фона
+    const currentColor = new THREE.Color(currentScene.background);
+    const nextColor = new THREE.Color(nextScene.background);
 
-    new TWEEN.Tween({ opacity: 1 })
-        .to({ opacity: 0 }, 1000)
-        .onUpdate(({ opacity }) => {
-            currentScene.children.forEach((object) => {
-                object.material.opacity = opacity;
-            });
+    new TWEEN.Tween(currentColor)
+        .to(
+            {
+                r: nextColor.r,
+                g: nextColor.g,
+                b: nextColor.b,
+            },
+            1000
+        )
+        .onUpdate(() => {
+            currentScene.background.setRGB(currentColor.r, currentColor.g, currentColor.b);
         })
         .onComplete(() => {
             currentIndex = index;
-
-            new TWEEN.Tween({ opacity: 0 })
-                .to({ opacity: 1 }, 1000)
-                .onUpdate(({ opacity }) => {
-                    nextScene.children.forEach((object) => {
-                        object.material.opacity = opacity;
-                    });
-                })
-                .onComplete(() => {
-                    isTransitioning = false;
-                })
-                .start();
+            isTransitioning = false;
         })
         .start();
 }
